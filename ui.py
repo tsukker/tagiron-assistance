@@ -36,12 +36,14 @@ def show_question_cards_in_deck(state: State):
     print("Awaiting question cards:")
     for idx, qc in enumerate(state.question_cards_in_deck):
         print(f"[{idx}] {qc}")
+    print("=" * 25)
 
 
 def show_question_cards_in_field(state: State):
     print("Current question cards:")
     for idx, qc in enumerate(state.question_cards_in_field):
         print(f"[{idx}] {qc}")
+    print("=" * 25)
 
 
 def show_possible_questions(state: State) -> list[Question]:
@@ -50,6 +52,7 @@ def show_possible_questions(state: State) -> list[Question]:
         entropy = state.calc_entropy(q)
         groups = state.groupby(q)
         print(f"[{idx}] {q} : entropy {entropy}, max {max(map(len, groups.values()))}")
+    print("=" * 25)
     return questions
 
 
@@ -123,7 +126,6 @@ def delete(state: State) -> int | None:
 def input_command(state: State, message=""):
     os.system("clear")
     show_question_cards_in_field(state)
-    print("=" * 25)
     if message:
         print(f"!! {message}")
     print(f"Current candidates: {len(state.candidates)}")
