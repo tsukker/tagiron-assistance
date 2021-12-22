@@ -68,13 +68,13 @@ class Game:
                 idx, question, answer = result
                 self.narrow_by_qa(question, answer)
             elif "add".startswith(command):
-                idx: int = ui.add(state)
+                idx: int | None = ui.add(state)
                 if idx is None:
                     self.set_message("Cancelled `add`")
                     continue
                 self.add_question_card(idx)
             elif "delete".startswith(command):
-                idx: int = ui.delete(state)
+                idx: int | None = ui.delete(state)
                 if idx is None:
                     self.set_message("Cancelled `delete`")
                     continue
