@@ -110,6 +110,28 @@ def add(state: State) -> int | None:
             continue
 
 
+def opposite(state: State) -> tuple[int, Question, Answer | None] | None:
+    while True:
+        os.system("clear")
+        questions = show_possible_questions(state)
+        idx = input_int("Which question did the opposite ask?")
+        if idx is None:
+            return None
+        if 0 <= idx < len(questions):
+            pass
+        else:
+            continue
+        question = questions[idx]
+        if question.type == QuestionType.SHARED:
+            answer_opt = qa_int(state, question)
+            if answer_opt is None:
+                return None
+            answer = answer_opt
+        else:
+            answer = None
+        return (idx, question, answer)
+
+
 def delete(state: State) -> int | None:
     while True:
         os.system("clear")
@@ -132,5 +154,5 @@ def input_command(state: State, message=""):
     if len(state.candidates) <= 10:
         print("candidates:")
         print(state.candidates)
-    print("`qa` / `add` / `delete` / `submit` / `undo`")
+    print("`qa` / `add` / `opposite` / `delete` / `submit` / `undo`")
     return input("[$] ")
