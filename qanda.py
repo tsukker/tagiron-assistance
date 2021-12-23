@@ -48,7 +48,7 @@ class Answer:
         elif self.type in (QuestionType.COUNT, QuestionType.SUM):
             assert isinstance(self.value, int)
         elif self.type == QuestionType.SHARED:
-            raise NotImplementedError
+            assert isinstance(self.value, int)
         else:
             assert False
 
@@ -114,6 +114,22 @@ def ca_sum_red_blue(hand: Hand, blue: bool = False) -> int:
     return sum(nums)
 
 
+def ca_shared_sum_all(hand: Hand) -> int:
+    nums = [tile.num for tile in hand.tiles]
+    return sum(nums)
+
+
+def ca_shared_center_45(hand: Hand) -> int:
+    center_tile = hand.tiles[2]
+    return 5 if center_tile.num >= 5 else 4
+
+
+def ca_shared_diff_min_max(hand: Hand) -> int:
+    min_tile = hand.tiles[0]
+    max_tile = hand.tiles[4]
+    return max_tile.num - min_tile.num
+
+
 class QuestionCard:
     def __init__(self, qcid: QuestionCardId, ja: str, en: str):
         self.id = qcid
@@ -146,8 +162,6 @@ class QuestionCard:
             return [Question(self, 6), Question(self, 7)]
         if self.id == QuestionCardId.WHERE_89:
             return [Question(self, 8), Question(self, 9)]
-        if self.type == QuestionType.SHARED:
-            return []
         return [Question(self)]
 
 
@@ -204,5 +218,11 @@ class Question:
             return ca_sum_red_blue(hand)
         elif self.question_card.id == QuestionCardId.SUM_BLUE:
             return ca_sum_red_blue(hand, blue=True)
+        elif self.question_card.id == QuestionCardId.SHARED_SUM_ALL:
+            return ca_shared_sum_all(hand)
+        elif self.question_card.id == QuestionCardId.SHARED_CENTER_45:
+            return ca_shared_center_45(hand)
+        elif self.question_card.id == QuestionCardId.SHARED_DIFF_MIN_MAX:
+            return ca_shared_diff_min_max(hand)
         else:
             raise NotImplementedError
