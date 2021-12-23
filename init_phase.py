@@ -1,11 +1,23 @@
 import itertools
+import os
 
 from utility import Color, Hand, Tile
 
 
+def input_hand_print_help():
+    os.system("clear")
+    print(
+        """Example:
+    - `1r` for red 1
+    - `2b` for blue 2
+    - `5` for green 5
+    """
+    )
+
+
 def input_tile():
     while True:
-        tile_opt = input("Input your tile (e.g. `1r` for red 1, `2b for blue 2): ")
+        tile_opt = input("Input your tile: ")
         if len(tile_opt) < 1:
             print("Input length must be two (or one for tile `5`), please retry.")
             continue
@@ -29,6 +41,9 @@ def input_tile():
 def input_hand():
     tiles: list[Tile] = []
     while len(tiles) < 5:
+        os.system("clear")
+        input_hand_print_help()
+        print(f"Current hand: {Hand(tiles)}")
         tile = input_tile()
         if tile.num == 5:
             if sum(1 for tile in tiles if tile.num == 5) == 2:
