@@ -97,11 +97,3 @@ class State:
         next_state.question_cards_in_field.append(qc)
         next_state.last_action = f"added question card `{qc.id}`"
         return next_state
-
-    def delete_question_card(self, idx: int):
-        assert 0 <= idx < len(self.question_cards_in_field)
-        next_state = self.copy()
-        qc = next_state.question_cards_in_field.pop(idx)
-        next_state.question_cards_in_trash.append(qc)
-        next_state.last_action = f"deleted question card `{qc.id}`"
-        return next_state

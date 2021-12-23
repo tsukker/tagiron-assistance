@@ -32,11 +32,6 @@ class Game:
         self.history.append(next_state)
         self.future = []
 
-    def delete_question_card(self, idx: int) -> None:
-        next_state = self.current_state().delete_question_card(idx)
-        self.history.append(next_state)
-        self.future = []
-
     """
     You can execute specific commands interactively through the shell-like interface.
     Basically, each commands represent actual actions in the game.
@@ -52,7 +47,6 @@ class Game:
     -- question : Ask a question and obtain information
     -- add : Add the specified card in the deck to the field
     -- opposite : Opposite player asks a question (Obtain info if shared-type one is choosen)
-    -- delete : Remove the specified card from the field to the trash
     - Advanced commands
     -- (none)
     """
@@ -86,12 +80,6 @@ class Game:
                     continue
                 idx, question, answer = result
                 self.opposite_ask(question, answer)
-            elif "delete".startswith(command):
-                idx: int | None = ui.delete(state)
-                if idx is None:
-                    self.set_message("Cancelled `delete`")
-                    continue
-                self.delete_question_card(idx)
             elif "submit".startswith(command):
                 print("`submit` is not implemented now")
                 pass

@@ -132,19 +132,6 @@ def opposite(state: State) -> tuple[int, Question, Answer | None] | None:
         return (idx, question, answer)
 
 
-def delete(state: State) -> int | None:
-    while True:
-        os.system("clear")
-        show_question_cards_in_field(state)
-        idx = input_int("Which question has been deleted?")
-        if idx is None:
-            return None
-        if 0 <= idx < len(state.question_cards_in_field):
-            return idx
-        else:
-            continue
-
-
 def input_command(state: State, message=""):
     os.system("clear")
     show_question_cards_in_field(state)
@@ -154,5 +141,5 @@ def input_command(state: State, message=""):
     if len(state.candidates) <= 10:
         print("candidates:")
         print(state.candidates)
-    print("`qa` / `add` / `opposite` / `delete` / `submit` / `undo`")
+    print("`qa` / `add` / `opposite` / `submit` / `undo`")
     return input("[$] ")
