@@ -4,6 +4,7 @@ Do not use this if you just want to have fun.
 
 ## Requirements
 
+- macOS or Linux
 - Python 3.10 or higher
 - Poetry
 
