@@ -110,11 +110,11 @@ def add(state: State) -> int | None:
             continue
 
 
-def opposite(state: State) -> tuple[int, Question, Answer | None] | None:
+def opponent(state: State) -> tuple[int, Question, Answer | None] | None:
     while True:
         os.system("clear")
         questions = show_possible_questions(state)
-        idx = input_int("Which question did the opposite ask?")
+        idx = input_int("Which question did the opponent ask?")
         if idx is None:
             return None
         if 0 <= idx < len(questions):
@@ -141,5 +141,5 @@ def input_command(state: State, message=""):
     if len(state.candidates) <= 10:
         print("candidates:")
         print(state.candidates)
-    print("`qa` / `add` / `opposite` / `submit` / `undo`")
+    print("`qa` / `add` / `opponent` / `submit` / `undo`")
     return input("[$] ")

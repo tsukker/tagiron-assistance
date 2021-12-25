@@ -27,8 +27,8 @@ class Game:
         self.history.append(next_state)
         self.future = []
 
-    def opposite_ask(self, question: Question, answer: Answer | None):
-        next_state = self.current_state().opposite_ask(question, answer)
+    def opponent_ask(self, question: Question, answer: Answer | None):
+        next_state = self.current_state().opponent_ask(question, answer)
         self.history.append(next_state)
         self.future = []
 
@@ -46,7 +46,7 @@ class Game:
     - Basic commands
     -- question : Ask a question and obtain information
     -- add : Add the specified card in the deck to the field
-    -- opposite : Opposite player asks a question (Obtain info if shared-type one is choosen)
+    -- opponent : Opponent asks a question (Obtain info if shared-type one is choosen)
     - Advanced commands
     -- (none)
     """
@@ -73,13 +73,13 @@ class Game:
                     self.set_message("Cancelled `add`")
                     continue
                 self.add_question_card(idx)
-            elif "opposite".startswith(command):
-                result = ui.opposite(state)
+            elif "opponent".startswith(command):
+                result = ui.opponent(state)
                 if result is None:
-                    self.set_message("Cancelled `opposite`")
+                    self.set_message("Cancelled `opponent`")
                     continue
                 idx, question, answer = result
-                self.opposite_ask(question, answer)
+                self.opponent_ask(question, answer)
             elif "submit".startswith(command):
                 print("`submit` is not implemented now")
                 pass

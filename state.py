@@ -77,7 +77,7 @@ class State:
         next_state.last_action = f"narrowed by question {question} and answer {answer}"
         return next_state
 
-    def opposite_ask(self, question: Question, answer: Answer | None):
+    def opponent_ask(self, question: Question, answer: Answer | None):
         next_state = self.copy()
         if question.type == QuestionType.SHARED:
             assert answer is not None
@@ -87,7 +87,7 @@ class State:
             if question.question_card.id == qc.id:
                 next_state.question_cards_in_field.pop(i)
                 next_state.question_cards_in_trash.append(qc)
-        next_state.last_action = f"opposite asked question {question}{f' and answer {answer} narrows' if answer else ''}"
+        next_state.last_action = f"opponent asked question {question}{f' and answer {answer} narrows' if answer else ''}"
         return next_state
 
     def add_question_card(self, idx: int):
