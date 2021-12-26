@@ -2,6 +2,7 @@ import os
 
 from qanda import Answer, Question, QuestionType
 from state import State
+from utility import Hand
 
 
 def clear_view():
@@ -9,7 +10,7 @@ def clear_view():
 
 
 def print_border():
-    print("=" * 80)
+    print("=" * 90)
 
 
 def input_int(message="") -> int | None:
@@ -144,6 +145,20 @@ def opponent(state: State) -> tuple[int, Question, Answer | None] | None:
         return (idx, question, answer)
 
 
+def comma_separated_hands(hands: list[Hand]) -> str:
+    return ", ".join(map(repr, hands))
+
+
+def show_all_candidates(state: State):
+    hands_per_line = 5
+    separated_hands = [state.candidates[i : i + hands_per_line] for i in range(0, len(state.candidates), hands_per_line)]
+    print("Candidates: [")
+    for hands in separated_hands[:-1]:
+        print(" " * 4 + comma_separated_hands(hands) + ",")
+    print(" " * 4 + comma_separated_hands(separated_hands[-1]))
+    print("]")
+
+
 def show_dashboard(state: State, message=""):
     # Your hand section
     print(f"Your hand: {state.hand}")
@@ -157,8 +172,7 @@ def show_dashboard(state: State, message=""):
     # Candidates of opponent's hand section
     print(f"Current candidates: {len(state.candidates)}")
     if len(state.candidates) <= 10:
-        print("Candidates:")
-        print(state.candidates)
+        show_all_candidates(state)
     print_border()
 
 
