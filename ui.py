@@ -92,6 +92,10 @@ def qa(state: State) -> tuple[int, Question, Answer] | None:
             answer = qa_list(state, question)
         elif question.type in (QuestionType.COUNT, QuestionType.SUM):
             answer = qa_int(state, question)
+        elif question.type == QuestionType.SHARED:
+            answer = qa_int(state, question)
+        else:
+            answer = None
         if answer is None:
             return None
         return (idx, question, answer)
