@@ -1,3 +1,4 @@
+import functools
 import math
 from enum import Enum
 
@@ -56,6 +57,18 @@ class Hand:
 def calc_entropy(cases: list[int]) -> float:
     s = sum(cases)
     return sum(map(lambda num: math.log2(s / num) * num, cases)) / s
+
+
+def colorize(s: str):
+    replacing_list = (
+        ("<Color.RED>", "\033[31m"),
+        ("</Color.RED>", "\033[39m"),
+        ("<Color.BLUE>", "\033[34m"),
+        ("</Color.BLUE>", "\033[39m"),
+        ("<Color.GREEN>", "\033[32m"),
+        ("</Color.GREEN>", "\033[39m"),
+    )
+    return functools.reduce(lambda s_tmp, item: s_tmp.replace(item[0], item[1]), replacing_list, s)
 
 
 if __name__ == "__main__":
