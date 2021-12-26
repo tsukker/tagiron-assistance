@@ -4,6 +4,14 @@ from qanda import Answer, Question, QuestionType
 from state import State
 
 
+def clear_view():
+    os.system("clear")
+
+
+def print_border():
+    print("=" * 80)
+
+
 def input_int(message="") -> int | None:
     while True:
         idx_opt = input(message + " ")
@@ -36,14 +44,14 @@ def show_question_cards_in_deck(state: State):
     print("Awaiting question cards:")
     for idx, qc in enumerate(state.question_cards_in_deck):
         print(f"[{idx}] {qc}")
-    print("=" * 25)
+    print_border()
 
 
 def show_question_cards_in_field(state: State):
     print("Current question cards:")
     for idx, qc in enumerate(state.question_cards_in_field):
         print(f"[{idx}] {qc}")
-    print("=" * 25)
+    print_border()
 
 
 def show_possible_questions(state: State) -> list[Question]:
@@ -52,13 +60,13 @@ def show_possible_questions(state: State) -> list[Question]:
         entropy = state.calc_entropy(q)
         groups = state.groupby(q)
         print(f"[{idx}] {q} : entropy {entropy}, max {max(map(len, groups.values()))}")
-    print("=" * 25)
+    print_border()
     return questions
 
 
 def qa_list(state: State, question: Question) -> Answer | None:
     while True:
-        os.system("clear")
+        clear_view()
         print(f"Asked {question}")
         lis = input_where("Answer:")
         if lis is None:
@@ -68,7 +76,7 @@ def qa_list(state: State, question: Question) -> Answer | None:
 
 def qa_int(state: State, question: Question) -> Answer | None:
     while True:
-        os.system("clear")
+        clear_view()
         print(f"Asked {question}")
         num = input_int("Answer:")
         if num is None:
@@ -78,7 +86,7 @@ def qa_int(state: State, question: Question) -> Answer | None:
 
 def qa(state: State) -> tuple[int, Question, Answer] | None:
     while True:
-        os.system("clear")
+        clear_view()
         questions = show_possible_questions(state)
         idx = input_int("Which question do you ask?")
         if idx is None:
@@ -103,7 +111,7 @@ def qa(state: State) -> tuple[int, Question, Answer] | None:
 
 def add(state: State) -> int | None:
     while True:
-        os.system("clear")
+        clear_view()
         show_question_cards_in_deck(state)
         idx = input_int("which card has been added?")
         if idx is None:
@@ -116,7 +124,7 @@ def add(state: State) -> int | None:
 
 def opponent(state: State) -> tuple[int, Question, Answer | None] | None:
     while True:
-        os.system("clear")
+        clear_view()
         questions = show_possible_questions(state)
         idx = input_int("Which question did the opponent ask?")
         if idx is None:
@@ -136,14 +144,26 @@ def opponent(state: State) -> tuple[int, Question, Answer | None] | None:
         return (idx, question, answer)
 
 
-def input_command(state: State, message=""):
-    os.system("clear")
+def show_dashboard(state: State, message=""):
+    # Your hand section
+    print(f"Your hand: {state.hand}")
+    print_border()
+    # Question cards section
     show_question_cards_in_field(state)
+    # Message section (if exists)
     if message:
         print(f"!! {message}")
+        print_border()
+    # Candidates of opponent's hand section
     print(f"Current candidates: {len(state.candidates)}")
     if len(state.candidates) <= 10:
-        print("candidates:")
+        print("Candidates:")
         print(state.candidates)
-    print("`question` / `add` / `opponent` / `submit` / `undo`")
-    return input("[$] ")
+    print_border()
+
+
+def input_command(state: State, message=""):
+    clear_view()
+    show_dashboard(state, message)
+    print("`q[uestion]` / `a[dd]` / `o[pponent]` / `submit` / `undo`")
+    return input("$ ")
