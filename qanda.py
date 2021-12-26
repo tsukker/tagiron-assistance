@@ -103,7 +103,7 @@ def ca_count_pairs(hand: Hand) -> int:
 
 def ca_sum_3_x(hand: Hand, start: int = 0, count: int = 3) -> int:
     nums = [tile.num for tile in hand.tiles]
-    return sum(nums[start : start + count])  # noqa: E203
+    return sum(nums[start : start + count])
 
 
 def ca_sum_red_blue(hand: Hand, blue: bool = False) -> int:
