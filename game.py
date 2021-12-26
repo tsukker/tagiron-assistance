@@ -27,8 +27,8 @@ class Game:
         self.history.append(next_state)
         self.future = []
 
-    def delete_question_card(self, idx: int) -> None:
-        next_state = self.current_state().delete_question_card(idx)
+    def opponent_ask(self, question: Question, answer: Answer | None):
+        next_state = self.current_state().opponent_ask(question, answer)
         self.history.append(next_state)
         self.future = []
 
@@ -46,7 +46,7 @@ class Game:
     - Basic commands
     -- question : Ask a question and obtain information
     -- add : Add the specified card in the deck to the field
-    -- delete : Remove the specified card from the field to the trash
+    -- opponent : Opponent asks a question (Obtain info if shared-type one is choosen)
     - Advanced commands
     -- (none)
     """
@@ -73,12 +73,13 @@ class Game:
                     self.set_message("Cancelled `add`")
                     continue
                 self.add_question_card(idx)
-            elif "delete".startswith(command):
-                idx: int | None = ui.delete(state)
-                if idx is None:
-                    self.set_message("Cancelled `delete`")
+            elif "opponent".startswith(command):
+                result = ui.opponent(state)
+                if result is None:
+                    self.set_message("Cancelled `opponent`")
                     continue
-                self.delete_question_card(idx)
+                idx, question, answer = result
+                self.opponent_ask(question, answer)
             elif "submit".startswith(command):
                 print("`submit` is not implemented now")
                 pass

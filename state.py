@@ -3,7 +3,7 @@ import json
 
 import init_phase
 import utility
-from qanda import Answer, Question, QuestionCard, QuestionCardId
+from qanda import Answer, Question, QuestionCard, QuestionCardId, QuestionType
 from utility import Hand
 
 """
@@ -77,18 +77,23 @@ class State:
         next_state.last_action = f"narrowed by question {question} and answer {answer}"
         return next_state
 
+    def opponent_ask(self, question: Question, answer: Answer | None):
+        next_state = self.copy()
+        if question.type == QuestionType.SHARED:
+            assert answer is not None
+            groups = self.groupby(question)
+            next_state.candidates = groups[answer.value]
+        for i, qc in enumerate(self.question_cards_in_field):
+            if question.question_card.id == qc.id:
+                next_state.question_cards_in_field.pop(i)
+                next_state.question_cards_in_trash.append(qc)
+        next_state.last_action = f"opponent asked question {question}{f' and answer {answer} narrows' if answer else ''}"
+        return next_state
+
     def add_question_card(self, idx: int):
         assert 0 <= idx < len(self.question_cards_in_deck)
         next_state = self.copy()
         qc = next_state.question_cards_in_deck.pop(idx)
         next_state.question_cards_in_field.append(qc)
         next_state.last_action = f"added question card `{qc.id}`"
-        return next_state
-
-    def delete_question_card(self, idx: int):
-        assert 0 <= idx < len(self.question_cards_in_field)
-        next_state = self.copy()
-        qc = next_state.question_cards_in_field.pop(idx)
-        next_state.question_cards_in_trash.append(qc)
-        next_state.last_action = f"deleted question card `{qc.id}`"
         return next_state

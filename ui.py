@@ -110,17 +110,26 @@ def add(state: State) -> int | None:
             continue
 
 
-def delete(state: State) -> int | None:
+def opponent(state: State) -> tuple[int, Question, Answer | None] | None:
     while True:
         os.system("clear")
-        show_question_cards_in_field(state)
-        idx = input_int("Which question has been deleted?")
+        questions = show_possible_questions(state)
+        idx = input_int("Which question did the opponent ask?")
         if idx is None:
             return None
-        if 0 <= idx < len(state.question_cards_in_field):
-            return idx
+        if 0 <= idx < len(questions):
+            pass
         else:
             continue
+        question = questions[idx]
+        if question.type == QuestionType.SHARED:
+            answer_opt = qa_int(state, question)
+            if answer_opt is None:
+                return None
+            answer = answer_opt
+        else:
+            answer = None
+        return (idx, question, answer)
 
 
 def input_command(state: State, message=""):
@@ -132,5 +141,5 @@ def input_command(state: State, message=""):
     if len(state.candidates) <= 10:
         print("candidates:")
         print(state.candidates)
-    print("`qa` / `add` / `delete` / `submit` / `undo`")
+    print("`qa` / `add` / `opponent` / `submit` / `undo`")
     return input("[$] ")
