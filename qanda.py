@@ -2,7 +2,7 @@ import collections
 import re
 from enum import Enum
 
-from utility import Color, Hand
+from utility import Color, Hand, colorize
 
 
 class QuestionCardId(Enum):
@@ -148,7 +148,7 @@ class QuestionCard:
 
     def __repr__(self):
         ja_shrinked = re.sub(r"\n[\s\S]*$", "...", self.ja_without_lf())
-        return f"Card<{self.id.value}> {ja_shrinked}"
+        return colorize(f"Card<{self.id.value}> {ja_shrinked}")
 
     def ja_without_lf(self):
         return self.ja.replace("\n", " ")
@@ -175,7 +175,7 @@ class Question:
     def __repr__(self):
         description = self.question_card.ja_without_lf()
         opt = "" if self.option is None else f", option({self.option})"
-        return f"Question<{description}{opt}>"
+        return colorize(f"Question<{description}{opt}>")
 
     def ask(self, hand: Hand):
         if self.question_card.id == QuestionCardId.WHERE_0:
