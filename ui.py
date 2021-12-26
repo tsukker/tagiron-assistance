@@ -145,5 +145,5 @@ def input_command(state: State, message=""):
     if len(state.candidates) <= 10:
         print("candidates:")
         print(state.candidates)
-    print("`qa` / `add` / `opponent` / `submit` / `undo`")
+    print("`question` / `add` / `opponent` / `submit` / `undo`")
     return input("[$] ")
