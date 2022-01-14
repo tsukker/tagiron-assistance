@@ -10,6 +10,7 @@ class Game:
         self.history = [initial_state]
         self.future: list[State] = []
         self.message = ""
+        self.show_all_candidates = False
 
     def current_state(self):
         return self.history[-1]
@@ -48,13 +49,14 @@ class Game:
     -- add : Add the specified card in the deck to the field
     -- opponent : Opponent asks a question (Obtain info if shared-type one is choosen)
     - Advanced commands
-    -- (none)
+    -- show : Toggle show_all switch;
+        if True, the dashboard shows all candidates even if the number of them is greater than 10
     """
 
     def start(self):
         while True:
             state = self.current_state()
-            command = ui.input_command(state, self.message)
+            command = ui.input_command(state, self.message, self.show_all_candidates)
             if command == "finish":
                 sys.exit()
             self.set_message()
@@ -83,6 +85,8 @@ class Game:
             elif "submit".startswith(command):
                 print("`submit` is not implemented now")
                 pass
+            elif "show_all" == command:
+                self.show_all_candidates = not self.show_all_candidates
             elif "undo".startswith(command):
                 print("`undo` is not implemented now")
                 pass
