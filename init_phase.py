@@ -92,10 +92,10 @@ def prepare_other_tiles(hand: Hand):
 def calculate_initial_candidates(hand: Hand):
     other_tiles: list[Tile] = prepare_other_tiles(hand)
     print(f"Other tiles <{' '.join(map(str, other_tiles))}>")
-    with_dupicate = sorted(itertools.combinations(other_tiles, 5))
-    assert len(with_dupicate) > 0
-    candidates = [Hand(list(with_dupicate[0]))]
-    for tiles, tiles_prev in zip(with_dupicate[1:], with_dupicate):
+    with_duplicate = sorted(itertools.combinations(other_tiles, 5))
+    assert len(with_duplicate) > 0
+    candidates = [Hand(list(with_duplicate[0]))]
+    for tiles, tiles_prev in zip(with_duplicate[1:], with_duplicate):
         if tiles != tiles_prev:
             candidates.append(Hand(list(tiles)))
     return candidates
