@@ -159,7 +159,7 @@ def show_all_candidates(state: State):
     print("]")
 
 
-def show_dashboard(state: State, message=""):
+def show_dashboard(state: State, message="", show_all=False):
     # Your hand section
     print(f"Your hand: {state.hand}")
     print_border()
@@ -171,13 +171,13 @@ def show_dashboard(state: State, message=""):
         print_border()
     # Candidates of opponent's hand section
     print(f"Current candidates: {len(state.candidates)}")
-    if len(state.candidates) <= 10:
+    if len(state.candidates) <= 10 or show_all:
         show_all_candidates(state)
     print_border()
 
 
-def input_command(state: State, message=""):
+def input_command(state: State, message="", show_all=False):
     clear_view()
-    show_dashboard(state, message)
-    print("`q[uestion]` / `a[dd]` / `o[pponent]` / `submit` / `undo`")
+    show_dashboard(state, message, show_all)
+    print("`q[uestion]` / `a[dd]` / `o[pponent]` / `s[ubmit]` / `show_all` / `undo`")
     return input("$ ")
