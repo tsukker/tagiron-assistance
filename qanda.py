@@ -13,7 +13,7 @@ class QuestionCardId(Enum):
     WHERE_67 = "where_67"
     WHERE_89 = "where_89"
     WHERE_SEQUENTIAL = "where_sequential"
-    WHERE_NEIGHBORING_SAME_COLOR = "where_neighboring_same_color"
+    WHERE_NEIGHBORING_SAME_COLOR = "where_nbr_same_color"
 
     COUNT_EVEN = "count_even"
     COUNT_ODD = "count_odd"
@@ -146,12 +146,18 @@ class QuestionCard:
         else:
             assert False
 
+    def id_str(self):
+        return str(self.id.value)
+
     def __repr__(self):
         ja_shrinked = re.sub(r"\n[\s\S]*$", "...", self.ja_without_lf())
         return colorize(f"Card<{self.id.value}> {ja_shrinked}")
 
     def ja_without_lf(self):
         return self.ja.replace("\n", " ")
+
+    def description(self):
+        return self.ja_without_lf()
 
     def to_questions(self):
         if self.id == QuestionCardId.WHERE_12:

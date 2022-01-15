@@ -1,8 +1,8 @@
 import os
 
-from qanda import Answer, Question, QuestionType
+from qanda import Answer, Question, QuestionCard, QuestionType
 from state import State
-from utility import Hand
+from utility import Hand, colorize, entire_east_asian_width, ljust_east_asian
 
 
 def clear_view():
@@ -41,17 +41,35 @@ def input_where(message="") -> tuple[int, ...] | None:
         return tuple(lis)
 
 
+def aligned_question_cards(cards: list[QuestionCard]):
+    qc_id_max = 0
+    qc_desc_max = 0
+    for card in cards:
+        qc_id_max = max(qc_id_max, entire_east_asian_width(card.id_str()))
+        qc_desc_max = max(qc_desc_max, entire_east_asian_width(card.description()))
+    qc_id_max += len("Card<>")
+    return [
+        [ljust_east_asian(f"Card<{card.id_str()}>", qc_id_max), ljust_east_asian(card.description(), qc_desc_max)]
+        for card in cards
+    ]
+
+
+def show_question_cards(cards: list[QuestionCard]):
+    aligned = aligned_question_cards(cards)
+    for idx, (qc_id, qc_desc) in enumerate(aligned):
+        idx_str = f"[{idx}]".ljust(4, " ")
+        print(f"{qc_id} {idx_str} {colorize(qc_desc)}")
+
+
 def show_question_cards_in_deck(state: State):
     print("Awaiting question cards:")
-    for idx, qc in enumerate(state.question_cards_in_deck):
-        print(f"[{idx}] {qc}")
+    show_question_cards(state.question_cards_in_deck)
     print_border()
 
 
 def show_question_cards_in_field(state: State):
     print("Current question cards:")
-    for idx, qc in enumerate(state.question_cards_in_field):
-        print(f"[{idx}] {qc}")
+    show_question_cards(state.question_cards_in_field)
     print_border()
 
 
