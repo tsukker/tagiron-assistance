@@ -1,5 +1,6 @@
 import functools
 import math
+import unicodedata
 from enum import Enum
 
 
@@ -69,6 +70,34 @@ def colorize(s: str):
         ("</Color.GREEN>", "\033[39m"),
     )
     return functools.reduce(lambda s_tmp, item: s_tmp.replace(item[0], item[1]), replacing_list, s)
+
+
+def strip_coloring_tag(s: str):
+    replacing_list = (
+        ("<Color.RED>", ""),
+        ("</Color.RED>", ""),
+        ("<Color.BLUE>", ""),
+        ("</Color.BLUE>", ""),
+        ("<Color.GREEN>", ""),
+        ("</Color.GREEN>", ""),
+    )
+    return functools.reduce(lambda s_tmp, item: s_tmp.replace(item[0], item[1]), replacing_list, s)
+
+
+def entire_east_asian_width(s: str):
+    cnt = 0
+    for c in strip_coloring_tag(s):
+        if unicodedata.east_asian_width(c) in "FWA":
+            cnt += 2
+        else:
+            cnt += 1
+    return cnt
+
+
+def ljust_east_asian(s: str, width: int, c: str = " "):
+    assert c == " "
+    num_added = max(0, width - entire_east_asian_width(s))
+    return s + (c * num_added)
 
 
 if __name__ == "__main__":
