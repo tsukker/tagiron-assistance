@@ -75,10 +75,20 @@ def show_question_cards_in_field(state: State):
 
 def show_possible_questions(state: State) -> list[Question]:
     questions = state.possible_questions()
+    qid_max = 0
+    id_width = len(str(len(questions) - 1)) + 2
+    for q in questions:
+        qid_max = max(qid_max, entire_east_asian_width(q.colored_question_label()))
+    print("Available questions:")
+    print_border()
     for idx, q in enumerate(questions):
+        colored_id_aligned = ljust_east_asian(q.colored_question_label(), qid_max)
+        idx_str = f"[{idx}]".ljust(id_width, " ")
         entropy = state.calc_entropy(q)
+        formatted_entropy = "{:.3f}".format(entropy)
         groups = state.groupby(q)
-        print(f"[{idx}] {q} : entropy {entropy}, max {max(map(len, groups.values()))}")
+        max_num = max(map(len, groups.values()))
+        print(f"{idx_str} {colored_id_aligned} {idx_str} Ent {formatted_entropy}, Max {max_num}")
     print_border()
     return questions
 
