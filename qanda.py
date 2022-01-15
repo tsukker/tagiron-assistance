@@ -146,9 +146,6 @@ class QuestionCard:
         else:
             assert False
 
-    def id_str(self):
-        return str(self.id.value)
-
     def __repr__(self):
         ja_shrinked = re.sub(r"\n[\s\S]*$", "...", self.ja_without_lf())
         return colorize(f"Card<{self.id.value}> {ja_shrinked}")
@@ -158,9 +155,6 @@ class QuestionCard:
 
     def ja_without_lf(self):
         return self.ja.replace("\n", " ")
-
-    def description(self):
-        return self.ja_without_lf()
 
     def colored_description(self):
         return colorize(self.ja_without_lf())

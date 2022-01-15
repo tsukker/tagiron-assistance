@@ -45,19 +45,19 @@ def aligned_question_cards(cards: list[QuestionCard]):
     qc_id_max = 0
     qc_desc_max = 0
     for card in cards:
-        qc_id_max = max(qc_id_max, entire_east_asian_width(card.id_str()))
-        qc_desc_max = max(qc_desc_max, entire_east_asian_width(card.description()))
-    qc_id_max += len("Card<>")
+        qc_id_max = max(qc_id_max, entire_east_asian_width(card.card_label()))
+        qc_desc_max = max(qc_desc_max, entire_east_asian_width(card.colored_description()))
     return [
-        [ljust_east_asian(f"Card<{card.id_str()}>", qc_id_max), ljust_east_asian(card.description(), qc_desc_max)]
+        [ljust_east_asian(card.card_label(), qc_id_max), ljust_east_asian(card.colored_description(), qc_desc_max)]
         for card in cards
     ]
 
 
 def show_question_cards(cards: list[QuestionCard]):
     aligned = aligned_question_cards(cards)
+    id_width = len(str(len(cards) - 1)) + 2
     for idx, (qc_id, qc_desc) in enumerate(aligned):
-        idx_str = f"[{idx}]".ljust(4, " ")
+        idx_str = f"[{idx}]".ljust(id_width, " ")
         print(f"{qc_id} {idx_str} {colorize(qc_desc)}")
 
 
