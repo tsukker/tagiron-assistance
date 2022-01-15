@@ -13,7 +13,7 @@ class QuestionCardId(Enum):
     WHERE_67 = "where_67"
     WHERE_89 = "where_89"
     WHERE_SEQUENTIAL = "where_sequential"
-    WHERE_NEIGHBORING_SAME_COLOR = "where_neighboring_same_color"
+    WHERE_NEIGHBORING_SAME_COLOR = "where_nbr_same_color"
 
     COUNT_EVEN = "count_even"
     COUNT_ODD = "count_odd"
