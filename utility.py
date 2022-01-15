@@ -84,9 +84,21 @@ def strip_coloring_tag(s: str):
     return functools.reduce(lambda s_tmp, item: s_tmp.replace(item[0], item[1]), replacing_list, s)
 
 
-def entire_east_asian_width(s: str):
+def strip_coloring_es(s: str):
+    replacing_list = (
+        ("\033[31m", ""),
+        ("\033[39m", ""),
+        ("\033[34m", ""),
+        ("\033[39m", ""),
+        ("\033[32m", ""),
+        ("\033[39m", ""),
+    )
+    return functools.reduce(lambda s_tmp, item: s_tmp.replace(item[0], item[1]), replacing_list, s)
+
+
+def entire_east_asian_width(colored_str: str):
     cnt = 0
-    for c in strip_coloring_tag(s):
+    for c in strip_coloring_es(colored_str):
         if unicodedata.east_asian_width(c) in "FWA":
             cnt += 2
         else:

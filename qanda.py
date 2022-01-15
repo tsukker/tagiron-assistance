@@ -153,11 +153,17 @@ class QuestionCard:
         ja_shrinked = re.sub(r"\n[\s\S]*$", "...", self.ja_without_lf())
         return colorize(f"Card<{self.id.value}> {ja_shrinked}")
 
+    def card_label(self):
+        return f"Card<{self.id.value}>"
+
     def ja_without_lf(self):
         return self.ja.replace("\n", " ")
 
     def description(self):
         return self.ja_without_lf()
+
+    def colored_description(self):
+        return colorize(self.ja_without_lf())
 
     def to_questions(self):
         if self.id == QuestionCardId.WHERE_12:
@@ -180,6 +186,11 @@ class Question:
     # NOTE: too specific implementation
     def __repr__(self):
         description = self.question_card.ja_without_lf()
+        opt = "" if self.option is None else f", option({self.option})"
+        return colorize(f"Question<{description}{opt}>")
+
+    def colored_question_label(self):
+        description = self.question_card.colored_description()
         opt = "" if self.option is None else f", option({self.option})"
         return colorize(f"Question<{description}{opt}>")
 
