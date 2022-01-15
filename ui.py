@@ -88,7 +88,7 @@ def show_possible_questions(state: State) -> list[Question]:
         formatted_entropy = "{:.3f}".format(entropy)
         groups = state.groupby(q)
         max_num = max(map(len, groups.values()))
-        print(f"{idx_str} {colored_id_aligned} {idx_str} entropy {formatted_entropy}, max {max_num}")
+        print(f"{idx_str} {colored_id_aligned} {idx_str} Ent {formatted_entropy}, Max {max_num}")
     print_border()
     return questions
 
