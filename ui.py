@@ -95,7 +95,6 @@ def show_possible_questions(state: State) -> list[Question]:
 
 def qa_list(state: State, question: Question) -> Answer | None:
     while True:
-        clear_view()
         print(f"Asked {question}")
         lis = input_where("Answer:")
         if lis is None:
@@ -105,7 +104,6 @@ def qa_list(state: State, question: Question) -> Answer | None:
 
 def qa_int(state: State, question: Question) -> Answer | None:
     while True:
-        clear_view()
         print(f"Asked {question}")
         num = input_int("Answer:")
         if num is None:
@@ -113,9 +111,10 @@ def qa_int(state: State, question: Question) -> Answer | None:
         return Answer(question.type, num)
 
 
-def qa(state: State) -> tuple[int, Question, Answer] | None:
+def qa(state: State, message="", show_all=False) -> tuple[int, Question, Answer] | None:
     while True:
         clear_view()
+        show_dashboard(state, message, show_all)
         questions = show_possible_questions(state)
         idx = input_int("Which question do you ask?")
         if idx is None:
@@ -138,9 +137,10 @@ def qa(state: State) -> tuple[int, Question, Answer] | None:
         return (idx, question, answer)
 
 
-def add(state: State) -> int | None:
+def add(state: State, message="", show_all=False) -> int | None:
     while True:
         clear_view()
+        show_dashboard(state, message, show_all)
         show_question_cards_in_deck(state)
         idx = input_int("which card has been added?")
         if idx is None:
@@ -151,9 +151,10 @@ def add(state: State) -> int | None:
             continue
 
 
-def opponent(state: State) -> tuple[int, Question, Answer | None] | None:
+def opponent(state: State, message="", show_all=False) -> tuple[int, Question, Answer | None] | None:
     while True:
         clear_view()
+        show_dashboard(state, message, show_all)
         questions = show_possible_questions(state)
         idx = input_int("Which question did the opponent ask?")
         if idx is None:

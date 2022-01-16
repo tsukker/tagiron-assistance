@@ -63,20 +63,20 @@ class Game:
             if command == "":
                 continue
             elif "question".startswith(command):
-                result = ui.qa(state)
+                result = ui.qa(state, self.message, self.show_all_candidates)
                 if result is None:
                     self.set_message("Cancelled `question`")
                     continue
                 idx, question, answer = result
                 self.narrow_by_qa(question, answer)
             elif "add".startswith(command):
-                idx: int | None = ui.add(state)
+                idx: int | None = ui.add(state, self.message, self.show_all_candidates)
                 if idx is None:
                     self.set_message("Cancelled `add`")
                     continue
                 self.add_question_card(idx)
             elif "opponent".startswith(command):
-                result = ui.opponent(state)
+                result = ui.opponent(state, self.message, self.show_all_candidates)
                 if result is None:
                     self.set_message("Cancelled `opponent`")
                     continue
