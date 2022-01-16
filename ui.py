@@ -53,23 +53,26 @@ def aligned_question_cards(cards: list[QuestionCard]):
     ]
 
 
-def show_question_cards(cards: list[QuestionCard]):
+def show_question_cards(cards: list[QuestionCard], with_index=True):
     aligned = aligned_question_cards(cards)
     id_width = len(str(len(cards) - 1)) + 2
     for idx, (qc_id, qc_desc) in enumerate(aligned):
         idx_str = f"[{idx}]".ljust(id_width, " ")
-        print(f"{qc_id} {idx_str} {colorize(qc_desc)}")
+        if with_index:
+            print(f"{qc_id} {idx_str} {colorize(qc_desc)}")
+        else:
+            print(f"{qc_id} {colorize(qc_desc)}")
 
 
-def show_question_cards_in_deck(state: State):
+def show_question_cards_in_deck(state: State, with_index=True):
     print("Awaiting question cards:")
-    show_question_cards(state.question_cards_in_deck)
+    show_question_cards(state.question_cards_in_deck, with_index)
     print_border()
 
 
-def show_question_cards_in_field(state: State):
+def show_question_cards_in_field(state: State, with_index=True):
     print("Current question cards:")
-    show_question_cards(state.question_cards_in_field)
+    show_question_cards(state.question_cards_in_field, with_index)
     print_border()
 
 
@@ -193,7 +196,7 @@ def show_dashboard(state: State, message="", show_all=False):
     print(f"Your hand: {state.hand}")
     print_border()
     # Question cards section
-    show_question_cards_in_field(state)
+    show_question_cards_in_field(state, with_index=False)
     # Message section (if exists)
     if message:
         print(f"!! {message}")
