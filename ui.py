@@ -82,7 +82,7 @@ def show_possible_questions(state: State) -> list[Question]:
     id_width = len(str(len(questions) - 1)) + 2
     for q in questions:
         qid_max = max(qid_max, entire_east_asian_width(q.colored_question_label()))
-    print("Available questions:")
+    print(f"Available {len(questions)} questions:")
     print_border()
     for idx, q in enumerate(questions):
         colored_id_aligned = ljust_east_asian(q.colored_question_label(), qid_max)
