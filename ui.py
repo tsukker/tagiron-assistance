@@ -71,7 +71,7 @@ def show_question_cards_in_deck(state: State, with_index=True):
 
 
 def show_question_cards_in_field(state: State, with_index=True):
-    print("Current question cards:")
+    print(f"Current {len(state.question_cards_in_field)} question cards:")
     show_question_cards(state.question_cards_in_field, with_index)
     print_border()
 
