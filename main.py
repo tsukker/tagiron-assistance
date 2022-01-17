@@ -1,12 +1,17 @@
+import sys
+
 from game import Game
 from state import State
 
 
 def main():
-    initial_state = State()
-    print(f"count: {len(initial_state.candidates)}")
-    game = Game(initial_state)
-    game.start()
+    while True:
+        initial_state = State()
+        game = Game(initial_state)
+        restart = game.start()
+        if restart:
+            continue
+        sys.exit()
 
 
 if __name__ == "__main__":

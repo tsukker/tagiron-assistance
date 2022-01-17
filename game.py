@@ -1,5 +1,3 @@
-import sys
-
 import ui
 from qanda import Answer, Question
 from state import State
@@ -58,7 +56,9 @@ class Game:
             state = self.current_state()
             command = ui.input_command(state, self.message, self.show_all_candidates)
             if command == "finish":
-                sys.exit()
+                return False
+            elif command == "restart":
+                return True
             self.set_message()
             if command == "":
                 continue
