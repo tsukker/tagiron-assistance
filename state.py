@@ -1,3 +1,4 @@
+import copy
 import itertools
 import json
 
@@ -34,14 +35,8 @@ class State:
         self.question_cards_in_trash: list[QuestionCard] = [] if question_cards_in_trash is None else question_cards_in_trash
         self.last_action = ""
 
-    def copy(self):
-        return State(
-            self.hand,
-            self.candidates,
-            self.question_cards_in_deck,
-            self.question_cards_in_field,
-            self.question_cards_in_trash,
-        )
+    def deepcopy(self):
+        return copy.deepcopy(self)
 
     def calc_case(self, candidate: Hand) -> int:
         self_fives = list(filter(lambda tile: tile.num == 5, self.hand.tiles))
@@ -68,7 +63,7 @@ class State:
 
     def narrow_by_qa(self, question: Question, answer: Answer):
         groups = self.groupby(question)
-        next_state = self.copy()
+        next_state = self.deepcopy()
         next_state.candidates = groups[answer.value]
         for i, qc in enumerate(self.question_cards_in_field):
             if question.question_card.id == qc.id:
@@ -78,7 +73,7 @@ class State:
         return next_state
 
     def opponent_ask(self, question: Question, answer: Answer | None):
-        next_state = self.copy()
+        next_state = self.deepcopy()
         if question.type == QuestionType.SHARED:
             assert answer is not None
             groups = self.groupby(question)
@@ -92,7 +87,7 @@ class State:
 
     def add_question_card(self, idx: int):
         assert 0 <= idx < len(self.question_cards_in_deck)
-        next_state = self.copy()
+        next_state = self.deepcopy()
         qc = next_state.question_cards_in_deck.pop(idx)
         next_state.question_cards_in_field.append(qc)
         next_state.last_action = f"added question card `{qc.id}`"
