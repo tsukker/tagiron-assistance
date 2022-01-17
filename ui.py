@@ -13,6 +13,13 @@ def print_border():
     print("=" * 90)
 
 
+def input_str(message="") -> str | None:
+    str_opt = input(message + " ")
+    if str_opt == "exit":
+        return None
+    return str_opt
+
+
 def input_int(message="") -> int | None:
     while True:
         idx_opt = input(message + " ")
@@ -175,6 +182,35 @@ def opponent(state: State, message="", show_all=False) -> tuple[int, Question, A
         else:
             answer = None
         return (idx, question, answer)
+
+
+def show_history(history: list[State], now: int):
+    id_width = 5
+    for idx, state in list(enumerate(history))[::-1]:
+        idx_or_now = f"[{'now' if idx == now else str(idx)}]".ljust(id_width, " ")
+        print(f"{idx_or_now} {state.last_action}")
+
+
+def maybe_travel(history: list[State], now: int, state, message="", show_all=False) -> int | None:
+    while True:
+        clear_view()
+        show_dashboard(state, message, show_all)
+        print(f"Total {len(history)} states in history:")
+        print_border()
+        show_history(history, now)
+        print_border()
+        idx_opt = input_str('travel? \033[2m[number / "no"]\033[0m :')
+        if idx_opt is None:
+            return None
+        if "no".startswith(idx_opt):
+            return -1
+        try:
+            num = int(idx_opt)
+        except ValueError:
+            continue
+        if num < 0 or len(history) <= num:
+            continue
+        return num
 
 
 def comma_separated_hands(hands: list[Hand]) -> str:
