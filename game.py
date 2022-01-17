@@ -36,19 +36,24 @@ class Game:
     Basically, each commands represent actual actions in the game.
     In another words, you need to convey what happened in the game to this system.
 
-    There are two types of commands: basic commands and advanced commands.
+    There are three types of commands: basic commands, advanced commands, and system commands.
     Basic commands represent real, concrete actions.
     Advanced commands are more like meta-actions, i.e. :
     - undo previous actions to go back to the past state,
     - save the state to file so that you can review how the game proceeded.
-    Currently, below commands are available:
+    System commands terminate the current game.
+
+    Currently available commands are following:
     - Basic commands
-    -- question : Ask a question and obtain information
-    -- add : Add the specified card in the deck to the field
-    -- opponent : Opponent asks a question (Obtain info if shared-type one is choosen)
+    -- `question` : Ask a question and obtain information
+    -- `add` : Add the specified card in the deck to the field
+    -- `opponent` : Opponent asks a question (Obtain info if shared-type one is choosen)
     - Advanced commands
-    -- show : Toggle show_all switch;
+    -- `show_all` : Toggle show_all switch;
         if True, the dashboard shows all candidates even if the number of them is greater than 10
+    - System commands
+    -- `finish` : Finish the current game and quit the system
+    -- `restart` : Finish the current game and start a new game
     """
 
     def start(self):
