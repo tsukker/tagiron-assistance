@@ -41,7 +41,7 @@ class Game:
     Advanced commands are more like meta-actions, i.e. :
     - undo previous actions to go back to the past state,
     - save the state to file so that you can review how the game proceeded.
-    System commands terminate the current game.
+    System commands terminate the current game. Any other commands above cannot do that.
 
     Currently available commands are following:
     - Basic commands
