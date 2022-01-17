@@ -6,30 +6,35 @@ from state import State
 class Game:
     def __init__(self, initial_state: State):
         self.history = [initial_state]
-        self.future: list[State] = []
+        self.now = 0
         self.message = ""
         self.show_all_candidates = False
 
     def current_state(self):
-        return self.history[-1]
+        return self.history[self.now]
+
+    def travel_to(self, idx):
+        self.now = idx
+        self.set_message(f"Travel to state <{self.history[self.now].last_action}>")
+
+    def record_state(self, next_state: State):
+        self.history = self.history[: self.now + 1] + [next_state]
+        self.now += 1
 
     def set_message(self, new_message=""):
         self.message = new_message
 
     def narrow_by_qa(self, question: Question, answer: Answer):
         next_state = self.current_state().narrow_by_qa(question, answer)
-        self.history.append(next_state)
-        self.future = []
+        self.record_state(next_state)
 
     def add_question_card(self, idx: int) -> None:
         next_state = self.current_state().add_question_card(idx)
-        self.history.append(next_state)
-        self.future = []
+        self.record_state(next_state)
 
     def opponent_ask(self, question: Question, answer: Answer | None):
         next_state = self.current_state().opponent_ask(question, answer)
-        self.history.append(next_state)
-        self.future = []
+        self.record_state(next_state)
 
     """
     You can execute specific commands interactively through the shell-like interface.
@@ -92,6 +97,14 @@ class Game:
                 pass
             elif "show_all" == command:
                 self.show_all_candidates = not self.show_all_candidates
+            elif "history" == command:
+                result = ui.maybe_travel(self.history, self.now, state, self.message, self.show_all_candidates)
+                if result is None:
+                    self.set_message("Cancelled `history`")
+                    continue
+                if result < 0 or len(self.history) <= result:
+                    continue
+                self.travel_to(result)
             elif "undo".startswith(command):
                 print("`undo` is not implemented now")
                 pass
